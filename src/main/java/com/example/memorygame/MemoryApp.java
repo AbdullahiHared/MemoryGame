@@ -10,8 +10,11 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import java.io.IOException;
 import java.util.*;
+import java.util.List;
 
 public class MemoryApp extends Application {
     private Label statusLabel = new Label("Find a pair!");
@@ -26,8 +29,13 @@ public class MemoryApp extends Application {
 
         Pane cardPane = new Pane();
         cardPane.setPrefSize(500, 400);
-        cardPane.setStyle("-fx-background-color: #2b2b2b;");
-
+        Image bgImage = new Image(
+                getClass().getResourceAsStream("/com/example/memorygame/card_back.png")
+        );
+        ImageView bgView = new ImageView(bgImage);
+        bgView.fitWidthProperty().bind(cardPane.prefWidthProperty());
+        bgView.fitHeightProperty().bind(cardPane.prefHeightProperty());
+        cardPane.getChildren().add(bgView);
         Color[] colors = {Color.RED, Color.BLUE, Color.GREEN, Color.ORANGE};
         for (Color c : colors) {
             cardList.add(new Card(c));
@@ -79,6 +87,8 @@ public class MemoryApp extends Application {
         Scene scene = new Scene(root, 520, 480);
         stage.setTitle("Memory Game");
         stage.setScene(scene);
+        cardPane.prefWidthProperty().bind(stage.widthProperty().subtract(20));
+        cardPane.prefHeightProperty().bind(stage.heightProperty().subtract(60));
         stage.show();
     }
 }
